@@ -45,12 +45,20 @@ class Genome
     null = gets.chomp
     null == 'Y'
   end
+
+  def set_fur
+    puts 'Is your not cat shorthaired or longhaired?'
+    puts 'SHORTHAIRED (S) or LONGHAIRED (L)'
+    fur = gets.chomp
+    fur == 'S' ? @fur[0] = 'S' : @fur = %w[L L]
+  end
 end
 
 def determine_new_string
   genome = Genome.new
   genome.set_species
   genome.set_wind
+  genome.set_fur
   puts "Your not cat's genetic string is:"
   puts genome.genome_string
 end
