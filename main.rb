@@ -150,4 +150,4 @@ def decode_new_genome
 end
 
 # decode_new_genome
-print_color_options(WC_COLORS)
+print_color_table(COLORS)
