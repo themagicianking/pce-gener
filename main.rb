@@ -79,6 +79,18 @@ class Genome
     end
   end
 
+  def dilute(color_type)
+    puts 'Is your not cat full color or dilute?'
+    print_dilute_options(color_type)
+    puts 'FULL (F) or DILUTE (D)'
+    dilute = gets.chomp
+    dilute_carrier = recessive_dilute if dilute == 'D'
+    dilutes = {
+      'F' => dilute_carrier ? %w[F D] : %w[F F], 'D' => %w[D D]
+    }
+    @dilute_alleles = dilutes[dilute]
+  end
+
   def color_num(color_type)
     puts "What is your cat's color number?"
     print_color_table(color_type)
@@ -122,9 +134,9 @@ def recessive_orange
   gets.chomp == 'Y'
 end
 
-def dilute(color_type)
-  puts 'Is your not cat dilute?'
-  print_dilute_options(color_type)
+def recessive_dilute
+  puts 'Put your not cat in the bean sandbox with a not cat with a recessive dilute trait.'
+  puts 'Are any of the dilutes in the dilute group?'
   puts 'YES (Y) or NO (N)'
   gets.chomp == 'Y'
 end
