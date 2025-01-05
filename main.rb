@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-BLACK_GROUP = %w[black chocolate brown tan].freeze
-ORANGE_GROUP = %w[red ginger orange apricot].freeze
-GREY_GROUP = %w[charcoal grey smoke silver].freeze
-CREAM_GROUP = %w[buff cream almond beige].freeze
+BLACK_GROUP = { "4": 'black', "3": 'chocolate', "2": 'brown', "1": 'tan' }.freeze
+ORANGE_GROUP = { "4": 'red', "3": 'ginger', "2": 'orange', "1": 'apricot' }.freeze
+GREY_GROUP = { "4": 'charcoal', "3": 'grey', "2": 'smoke', "1": 'silver' }.freeze
+CREAM_GROUP = { "4": 'buff', "3": 'cream', "2": 'almond', "1": 'beige' }.freeze
+
+COLORS = [BLACK_GROUP, ORANGE_GROUP, GREY_GROUP, CREAM_GROUP].freeze
 
 # creates genetic string for a not-cat
 class Genome
@@ -68,8 +70,8 @@ class Genome
 
   def color
     puts 'Is your cat in the orange group, the black group, snow, or albino?'
-    puts "Orange group: #{ORANGE_GROUP.join(', ')}, #{CREAM_GROUP.join(', ')}"
-    puts "Black group: #{BLACK_GROUP.join(', ')}, #{GREY_GROUP.join(', ')}"
+    puts "Orange group: #{ORANGE_GROUP.values.join(', ')}, #{CREAM_GROUP.values.join(', ')}"
+    puts "Black group: #{BLACK_GROUP.values.join(', ')}, #{GREY_GROUP.values.join(', ')}"
     puts 'ORANGE (O), BLACK (B), SNOW (S) or ALBINO (A)'
     color1 = gets.chomp
     return unless %w[O B].include?(color1)
@@ -103,10 +105,34 @@ class Genome
 
   def dilute
     puts 'Is your not cat dilute?'
-    puts "Dilute colors: #{CREAM_GROUP.join(', ')}, #{GREY_GROUP.join(', ')}"
+    puts "Dilute colors: #{CREAM_GROUP.values.join(', ')}, #{GREY_GROUP.values.join(', ')}"
     puts 'YES (Y) or NO (N)'
     gets.chomp == 'Y'
   end
+
+  def color_num
+    puts "What is your cat's color number?"
+  end
+end
+
+def print_color_table
+  puts '|     1     |     2     |     3     |     4     |'
+  puts '|-----------|-----------|-----------|-----------|'
+  print_row(ORANGE_GROUP)
+  puts '|-----------|-----------|-----------|-----------|'
+  print_row(BLACK_GROUP)
+  puts '|-----------|-----------|-----------|-----------|'
+  print_row(CREAM_GROUP)
+  puts '|-----------|-----------|-----------|-----------|'
+  print_row(GREY_GROUP)
+end
+
+def print_row(colors)
+  str = ''
+  colors.each_value.reverse_each do |color|
+    str = "#{str}#{' ' * (10 - color.length)}#{color} |"
+  end
+  puts "|#{str}"
 end
 
 def decode_new_genome
@@ -114,9 +140,10 @@ def decode_new_genome
   # genome.species
   # genome.wind
   # genome.fur
-  genome.color
-  puts "Your not cat's genetic string is:"
-  puts genome.genome_string
+  # genome.color
+  print_color_table
+  # puts "Your not cat's genetic string is:"
+  # puts genome.genome_string
 end
 
 decode_new_genome
