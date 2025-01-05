@@ -68,16 +68,28 @@ class Genome
     gets.chomp == 'Y'
   end
 
-  def color
-    puts 'Is your cat in the orange group, the black group, snow, or albino?'
+  def colors
+    orange_or_black = check_orange_or_black
+    if orange_or_black
+      color_group
+      visible_color(@color[0])
+    else
+      # something else
+    end
+  end
+
+  def check_orange_or_black
+    puts 'Is your not cat snow or albino?'
+    puts 'YES (Y) or NO (N)'
+    gets.chomp == 'N'
+  end
+
+  def color_group
+    puts 'Is your cat in the orange group or the black group?'
     puts "Orange group: #{ORANGE_GROUP.values.join(', ')}, #{CREAM_GROUP.values.join(', ')}"
     puts "Black group: #{BLACK_GROUP.values.join(', ')}, #{GREY_GROUP.values.join(', ')}"
-    puts 'ORANGE (O), BLACK (B), SNOW (S) or ALBINO (A)'
-    color1 = gets.chomp
-    return unless %w[O B].include?(color1)
-
-    visible_color(color1)
-    dilute ? @color[2, 3] = %w[D D] : @color[2] = ['F']
+    puts 'ORANGE (O) or BLACK (B)'
+    @color[0] = gets.chomp
   end
 
   def visible_color(color)
@@ -112,6 +124,10 @@ class Genome
 
   def color_num
     puts "What is your cat's color number?"
+    print_color_table
+    puts 'ONE (1), TWO (2), THREE (3), or FOUR(4)'
+    color5 = gets.chomp
+    @color[4] = color5
   end
 end
 
@@ -140,10 +156,9 @@ def decode_new_genome
   # genome.species
   # genome.wind
   # genome.fur
-  # genome.color
-  print_color_table
-  # puts "Your not cat's genetic string is:"
-  # puts genome.genome_string
+  genome.colors
+  puts "Your not cat's genetic string is:"
+  puts genome.genome_string
 end
 
 decode_new_genome
