@@ -68,6 +68,8 @@ class Genome
 
   def color
     puts 'Is your cat in the orange group, the black group, snow, or albino?'
+    puts "Orange group: #{ORANGE_GROUP.join(', ')}, #{CREAM_GROUP.join(', ')}"
+    puts "Black group: #{BLACK_GROUP.join(', ')}, #{GREY_GROUP.join(', ')}"
     puts 'ORANGE (O), BLACK (B), SNOW (S) or ALBINO (A)'
     color1 = gets.chomp
     return unless %w[O B].include?(color1)
@@ -101,9 +103,9 @@ end
 
 def determine_new_string
   genome = Genome.new
-  genome.species
-  genome.wind
-  genome.fur
+  # genome.species
+  # genome.wind
+  # genome.fur
   genome.color
   puts "Your not cat's genetic string is:"
   puts genome.genome_string
