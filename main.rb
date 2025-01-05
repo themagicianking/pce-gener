@@ -10,24 +10,24 @@ COLORS = [BLACK_GROUP, ORANGE_GROUP, GREY_GROUP, CREAM_GROUP].freeze
 # creates genetic string for a not-cat
 class Genome
   def initialize
-    @species = '?'
-    @wind = ['?', '?']
-    @fur = ['?', '?']
-    @color = ['?', '?', '?', '?', '?']
-    @pattern = ['?', '?', '?', '?']
-    @white = ['?', '?', '?', '?']
-    @growth = ['?', '?']
-    @accent = ['?', '?']
+    @species_allele = '?'
+    @wind_alleles = ['?', '?']
+    @fur_alleles = ['?', '?']
+    @color_alleles = ['?', '?', '?', '?', '?']
+    @pattern_alleles = ['?', '?', '?', '?']
+    @white_alleles = ['?', '?', '?', '?']
+    @growth_alleles = ['?', '?']
+    @accent_alleles = ['?', '?']
   end
 
   def genome_string
-    "[#{@species}] [#{@wind.join}] [#{@fur.join}] [#{@color.join}] [#{@pattern.join}] [#{@white.join}] [#{@growth.join}] [#{@accent.join}]"
+    "[#{@species_allele}] [#{@wind_alleles.join}] [#{@fur_alleles.join}] [#{@color_alleles.join}] [#{@pattern_alleles.join}] [#{@white_alleles.join}] [#{@growth_alleles.join}] [#{@accent_alleles.join}]"
   end
 
   def species
     puts 'What species is your not cat?'
     puts 'CAT (C) or MERCAT (M)'
-    @species = gets.chomp
+    @species_allele = gets.chomp
   end
 
   def wind
@@ -40,7 +40,7 @@ class Genome
       'S' => recessive_null ? %w[S O] : %w[S S],
       'T' => %w[N S], 'O' => %w[O O]
     }
-    @wind = winds[wind]
+    @wind_alleles = winds[wind]
   end
 
   def check_recessive_null
@@ -58,7 +58,7 @@ class Genome
     furs = {
       'S' => recessive_longhair ? %w[S L] : %w[S S], 'L' => %w[L L]
     }
-    @fur = furs[fur]
+    @fur_alleles = furs[fur]
   end
 
   def check_recessive_longhair
@@ -72,7 +72,7 @@ class Genome
     orange_or_black = check_orange_or_black
     if orange_or_black
       color_group
-      visible_color(@color[0])
+      visible_color(@color_alleles[0])
     else
       # something else
     end
@@ -89,16 +89,16 @@ class Genome
     puts "Orange group: #{ORANGE_GROUP.values.join(', ')}, #{CREAM_GROUP.values.join(', ')}"
     puts "Black group: #{BLACK_GROUP.values.join(', ')}, #{GREY_GROUP.values.join(', ')}"
     puts 'ORANGE (O) or BLACK (B)'
-    @color[0] = gets.chomp
+    @color_alleles[0] = gets.chomp
   end
 
   def visible_color(color)
-    @color[0] = color
-    @color[1] = if color == 'O'
-                  check_recessive_black ? 'B' : 'O'
-                else
-                  check_recessive_orange ? 'O' : 'B'
-                end
+    @color_alleles[0] = color
+    @color_alleles[1] = if color == 'O'
+                          check_recessive_black ? 'B' : 'O'
+                        else
+                          check_recessive_orange ? 'O' : 'B'
+                        end
   end
 
   def check_recessive_black
@@ -127,7 +127,7 @@ class Genome
     print_color_table
     puts 'ONE (1), TWO (2), THREE (3), or FOUR(4)'
     color5 = gets.chomp
-    @color[4] = color5
+    @color_alleles[4] = color5
   end
 end
 
@@ -154,9 +154,13 @@ end
 def decode_new_genome
   genome = Genome.new
   # genome.species
-  # genome.wind
+  genome.wind
   # genome.fur
-  genome.colors
+  if genome.wind_alleles != %w[N S]
+    genome.colors
+  else
+    puts "You've got a weird watercolor."
+  end
   puts "Your not cat's genetic string is:"
   puts genome.genome_string
 end
