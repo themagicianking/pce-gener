@@ -29,13 +29,21 @@ class Genome
     puts 'What wind does your not cat have?'
     puts 'NORTH (N), SOUTH (S), TRADE (T), or NULL (O)'
     wind = gets.chomp
+    recessive_null = check_recessive_null if %w[N S].include?(wind)
     winds = {
-      'N' => ['N', '?'],
-      'S' => ['S', '?'],
-      'T' => %w[N S],
-      'O' => %w[O O]
+      'N' => recessive_null ? %w[N O] : %w[N N],
+      'S' => recessive_null ? %w[S O] : %w[S S],
+      'T' => %w[N S], 'O' => %w[O O]
     }
     @wind = winds[wind]
+  end
+
+  def check_recessive_null
+    puts 'Put your not cat in the bean sandbox with a North or South wind not cat with a recessive Null trait.'
+    puts 'Do any of the beans come in the snow color?'
+    puts 'YES (Y) or NO (N)'
+    null = gets.chomp
+    null == 'Y'
   end
 end
 
