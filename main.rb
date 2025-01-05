@@ -6,6 +6,7 @@ require './helpers'
 # creates genetic string for a not-cat
 class Genome
   attr_reader :wind_alleles
+  attr_writer :color_type_hash
 
   def initialize
     @species_allele = '?'
@@ -33,10 +34,10 @@ class Genome
     puts 'What wind does your not cat have?'
     puts 'NORTH (N), SOUTH (S), TRADE (T), or NULL (O)'
     wind = gets.chomp
-    recessive_null = check_recessive_null if %w[N S].include?(wind)
+    null_carrier = recessive_null if %w[N S].include?(wind)
     winds = {
-      'N' => recessive_null ? %w[N O] : %w[N N],
-      'S' => recessive_null ? %w[S O] : %w[S S],
+      'N' => null_carrier ? %w[N O] : %w[N N],
+      'S' => null_carrier ? %w[S O] : %w[S S],
       'T' => %w[N S], 'O' => %w[O O]
     }
     @wind_alleles = winds[wind]
@@ -46,9 +47,9 @@ class Genome
     puts 'Is your not cat shorthaired or longhaired?'
     puts 'SHORTHAIRED (S) or LONGHAIRED (L)'
     fur = gets.chomp
-    recessive_longhair = check_recessive_longhair if fur == 'S'
+    longhair_carrier = recessive_longhair if fur == 'S'
     furs = {
-      'S' => recessive_longhair ? %w[S L] : %w[S S], 'L' => %w[L L]
+      'S' => longhair_carrier ? %w[S L] : %w[S S], 'L' => %w[L L]
     }
     @fur_alleles = furs[fur]
   end
@@ -71,9 +72,9 @@ class Genome
   def visible_color(color)
     @color_alleles[0] = color
     @color_alleles[1] = if color == 'O'
-                          check_recessive_black ? 'B' : 'O'
+                          recessive_black ? 'B' : 'O'
                         else
-                          check_recessive_orange ? 'O' : 'B'
+                          recessive_orange ? 'O' : 'B'
                         end
   end
 
@@ -86,41 +87,41 @@ class Genome
   end
 end
 
-def check_recessive_null
+def recessive_null
   puts 'Put your not cat in the bean sandbox with a North or South wind not cat with a recessive Null trait.'
   puts 'Do any of the beans come in the snow color?'
   puts 'YES (Y) or NO (N)'
   gets.chomp == 'Y'
 end
 
-def check_recessive_longhair
+def recessive_longhair
   puts 'Put your not cat in the bean sandbox with a longhaired not cat.'
   puts 'Do any of the beans have long hair?'
   puts 'YES (Y) or NO (N)'
   gets.chomp == 'Y'
 end
 
-def check_albino
+def albino
   puts 'Is your not cat albino?'
   puts 'YES (Y) or NO (N)'
-  gets.chomp == 'N'
+  gets.chomp == 'Y'
 end
 
-def check_recessive_black
+def recessive_black
   puts 'Put your not cat in the bean sandbox with a not cat with a recessive black trait.'
   puts 'Are any of the beans in the black group?'
   puts 'YES (Y) or NO (N)'
   gets.chomp == 'Y'
 end
 
-def check_recessive_orange
+def recessive_orange
   puts 'Put your not cat in the bean sandbox with a not cat with a recessive orange trait.'
   puts 'Are any of the beans in the orange group?'
   puts 'YES (Y) or NO (N)'
   gets.chomp == 'Y'
 end
 
-def check_dilute(color_type)
+def dilute(color_type)
   puts 'Is your not cat dilute?'
   print_dilute_options(color_type)
   puts 'YES (Y) or NO (N)'
@@ -131,7 +132,9 @@ def decode_new_genome(genome)
   genome.species
   genome.wind
   genome.fur
-  if genome.wind_alleles == %w[N S]
+  if albino
+    puts 'Not cat is albino.'
+  elsif genome.wind_alleles == %w[N S]
     genome.color_type
   elsif genome.wind_alleles != %w[O O]
     genome.color_type_hash = COLORS
