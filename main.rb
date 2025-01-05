@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+BLACK_GROUP = %w[black chocolate brown tan].freeze
+ORANGE_GROUP = %w[red ginger orange apricot].freeze
+GREY_GROUP = %w[charcoal grey smoke silver].freeze
+CREAM_GROUP = %w[buff cream almond beige].freeze
+
 # creates genetic string for a not-cat
 class Genome
-  attr_accessor :species
-
   def initialize
     @species = '?'
     @wind = ['?', '?']
@@ -19,13 +22,13 @@ class Genome
     "[#{@species}] [#{@wind.join}] [#{@fur.join}] [#{@color.join}] [#{@pattern.join}] [#{@white.join}] [#{@growth.join}] [#{@accent.join}]"
   end
 
-  def set_species
+  def species
     puts 'What species is your not cat?'
     puts 'CAT (C) or MERCAT (M)'
     @species = gets.chomp
   end
 
-  def set_wind
+  def wind
     puts 'What wind does your not cat have?'
     puts 'NORTH (N), SOUTH (S), TRADE (T), or NULL (O)'
     wind = gets.chomp
@@ -45,7 +48,7 @@ class Genome
     gets.chomp == 'Y'
   end
 
-  def set_fur
+  def fur
     puts 'Is your not cat shorthaired or longhaired?'
     puts 'SHORTHAIRED (S) or LONGHAIRED (L)'
     fur = gets.chomp
@@ -63,22 +66,45 @@ class Genome
     gets.chomp == 'Y'
   end
 
-  def set_color
-    puts 'Is your cat in the orange group, the black group, or albino?'
-    puts 'ORANGE (O), BLACK (B), or ALBINO (A)'
-    color = gets.chomp
-    return unless color != 'A'
+  def color
+    puts 'Is your cat in the orange group, the black group, snow, or albino?'
+    puts 'ORANGE (O), BLACK (B), SNOW (S) or ALBINO (A)'
+    color1 = gets.chomp
+    return unless %w[O B].include?(color1)
 
+    visible_color(color1)
+  end
+
+  def visible_color(color)
     @color[0] = color
+    @color[1] = if color == 'O'
+                  check_recessive_black ? 'B' : 'O'
+                else
+                  check_recessive_orange ? 'O' : 'B'
+                end
+  end
+
+  def check_recessive_black
+    puts 'Put your not cat in the bean sandbox with a not cat with a recessive black trait.'
+    puts 'Are any of the beans in the black group?'
+    puts 'YES (Y) or NO (N)'
+    gets.chomp == 'Y'
+  end
+
+  def check_recessive_orange
+    puts 'Put your not cat in the bean sandbox with a not cat with a recessive orange trait.'
+    puts 'Are any of the beans in the orange group?'
+    puts 'YES (Y) or NO (N)'
+    gets.chomp == 'Y'
   end
 end
 
 def determine_new_string
   genome = Genome.new
-  genome.set_species
-  genome.set_wind
-  genome.set_fur
-  genome.set_color
+  genome.species
+  genome.wind
+  genome.fur
+  genome.color
   puts "Your not cat's genetic string is:"
   puts genome.genome_string
 end
