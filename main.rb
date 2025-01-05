@@ -42,15 +42,25 @@ class Genome
     puts 'Put your not cat in the bean sandbox with a North or South wind not cat with a recessive Null trait.'
     puts 'Do any of the beans come in the snow color?'
     puts 'YES (Y) or NO (N)'
-    null = gets.chomp
-    null == 'Y'
+    gets.chomp == 'Y'
   end
 
   def set_fur
     puts 'Is your not cat shorthaired or longhaired?'
     puts 'SHORTHAIRED (S) or LONGHAIRED (L)'
     fur = gets.chomp
-    fur == 'S' ? @fur[0] = 'S' : @fur = %w[L L]
+    recessive_longhair = check_recessive_longhair if fur == 'S'
+    furs = {
+      'S' => recessive_longhair ? %w[S L] : %w[S S], 'L' => %w[L L]
+    }
+    @fur = furs[fur]
+  end
+
+  def check_recessive_longhair
+    puts 'Put your not cat in the bean sandbox with a longhaired not cat.'
+    puts 'Do any of the beans have long hair?'
+    puts 'YES (Y) or NO (N)'
+    gets.chomp == 'Y'
   end
 end
 
