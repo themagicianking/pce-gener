@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './data'
+require './helpers'
 
 # creates genetic string for a not-cat
 class Genome
@@ -92,16 +93,6 @@ class Genome
     @color_alleles[0] = gets.chomp
   end
 
-  def standard_colors
-    puts "Orange group: #{ORANGE_GROUP.values.join(', ')}, #{CREAM_GROUP.values.join(', ')}"
-    puts "Black group: #{BLACK_GROUP.values.join(', ')}, #{GREY_GROUP.values.join(', ')}"
-  end
-
-  def watercolor_colors
-    puts "Orange group: #{ORANGE_WC_GROUP.values.join(', ')}, #{CREAM_WC_GROUP.values.join(', ')}"
-    puts "Black group: #{BLACK_WC_GROUP.values.join(', ')}, #{GREY_WC_GROUP.values.join(', ')}"
-  end
-
   def visible_color(color)
     @color_alleles[0] = color
     @color_alleles[1] = if color == 'O'
@@ -125,9 +116,10 @@ class Genome
     gets.chomp == 'Y'
   end
 
-  def dilute
+  def dilute(color_type)
+    color_types = { 'standard' => COLORS, 'watercolor' => WC_COLORS }
     puts 'Is your not cat dilute?'
-    puts "Dilute colors: #{CREAM_GROUP.values.join(', ')}, #{GREY_GROUP.values.join(', ')}"
+
     puts 'YES (Y) or NO (N)'
     gets.chomp == 'Y'
   end
@@ -140,23 +132,6 @@ class Genome
     color5 = gets.chomp
     @color_alleles[4] = color5
   end
-end
-
-def print_color_table(color_type)
-  puts '      1     |     2     |     3     |     4      '
-  color_type.each do |color_group|
-    puts ' -----------|-----------|-----------|----------- '
-    print_row(color_group)
-  end
-  puts ' -----------------------------------------------'
-end
-
-def print_row(colors)
-  str = ''
-  colors.each_value.reverse_each do |color|
-    str = "#{str}#{' ' * (10 - color.length)}#{color} |"
-  end
-  puts "|#{str}"
 end
 
 def decode_new_genome
@@ -174,4 +149,5 @@ def decode_new_genome
   puts genome.genome_string
 end
 
-decode_new_genome
+# decode_new_genome
+print_color_options(WC_COLORS)
