@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # creates genetic string for a not-cat
-class GeneticString
-  attr_reader :species
+class Genome
+  attr_accessor :species
 
   def initialize
     @species = '?'
@@ -15,20 +15,36 @@ class GeneticString
     @accent = ['?', '?']
   end
 
-  def get_readable_string
-    "[#{@species}]"
+  def genome_string
+    "[#{@species}] [#{@wind.join}] [#{@fur.join}] [#{@color.join}] [#{@pattern.join}] [#{@white.join}] [#{@growth.join}] [#{@accent.join}]"
+  end
+
+  def set_species
+    puts 'What species is your not cat?'
+    puts 'CAT (C) or MERCAT (M)'
+    @species = gets.chomp
+  end
+
+  def set_wind
+    puts 'What wind does your not cat have?'
+    puts 'NORTH (N), SOUTH (S), TRADE (T), or NULL (O)'
+    wind = gets.chomp
+    winds = {
+      'N' => ['N', '?'],
+      'S' => ['S', '?'],
+      'T' => %w[N S],
+      'O' => %w[O O]
+    }
+    @wind = winds[wind]
   end
 end
 
-def species
-  puts 'What species is your not cat?'
-  puts 'CAT (C) or MERCAT (M)'
-  gets.chomp
+def determine_new_string
+  genome = Genome.new
+  genome.set_species
+  genome.set_wind
+  puts "Your not cat's genetic string is:"
+  puts genome.genome_string
 end
 
-# def determine_new_string
-#   string = new GeneticString
-# end
-
-string = GeneticString.new
-puts string.get_readable_string
+determine_new_string
