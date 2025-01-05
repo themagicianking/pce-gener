@@ -62,20 +62,21 @@ class Genome
     @color_type_hash = color_types[type]
   end
 
-  def color_group(color_type)
-    print_color_options(color_type)
+  def orange_black_dominant(color_type)
     puts 'Is your cat in the orange group or the black group?'
+    print_color_options(color_type)
     puts 'ORANGE (O) or BLACK (B)'
-    @color_alleles[0] = gets.chomp
+    color1 = gets.chomp
+    @color_alleles[0] = color1
+    @color_alleles[1] = orange_black_recessive
   end
 
-  def visible_color(color)
-    @color_alleles[0] = color
-    @color_alleles[1] = if color == 'O'
-                          recessive_black ? 'B' : 'O'
-                        else
-                          recessive_orange ? 'O' : 'B'
-                        end
+  def orange_black_recessive
+    if @color_alleles[0] == 'O'
+      recessive_black ? 'B' : 'O'
+    else
+      recessive_orange ? 'O' : 'B'
+    end
   end
 
   def color_num(color_type)
@@ -135,9 +136,9 @@ def decode_new_genome(genome)
   if albino
     puts 'Not cat is albino.'
   elsif genome.wind_alleles == %w[N S]
-    genome.color_type
+    genome.orange_black_dominant(WC_COLORS)
   elsif genome.wind_alleles != %w[O O]
-    genome.color_type_hash = COLORS
+    genome.orange_black_dominant(COLORS)
   end
 end
 
