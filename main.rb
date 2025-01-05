@@ -1,39 +1,6 @@
 # frozen_string_literal: true
 
-BLACK_GROUP = { "4": 'black', "3": 'chocolate', "2": 'brown', "1": 'tan' }.freeze
-ORANGE_GROUP = { "4": 'red', "3": 'ginger', "2": 'orange', "1": 'apricot' }.freeze
-GREY_GROUP = { "4": 'charcoal', "3": 'grey', "2": 'smoke', "1": 'silver' }.freeze
-CREAM_GROUP = { "4": 'buff', "3": 'cream', "2": 'almond', "1": 'beige' }.freeze
-
-COLORS = [BLACK_GROUP, ORANGE_GROUP, GREY_GROUP, CREAM_GROUP].freeze
-
-BLACK_WC_GROUP = {
-  "4": "#{BLACK_GROUP[:"4"]}-#{BLACK_GROUP[:"3"]}",
-  "3": "#{BLACK_GROUP[:"3"]}-#{BLACK_GROUP[:"2"]}",
-  "2": "#{BLACK_GROUP[:"2"]}-#{BLACK_GROUP[:"1"]}",
-  "1": "#{BLACK_GROUP[:"1"]}-snow"
-}.freeze
-
-ORANGE_WC_GROUP = {
-  "4": "#{ORANGE_GROUP[:"4"]}-#{ORANGE_GROUP[:"3"]}",
-  "3": "#{ORANGE_GROUP[:"3"]}-#{ORANGE_GROUP[:"2"]}",
-  "2": "#{ORANGE_GROUP[:"2"]}-#{ORANGE_GROUP[:"1"]}",
-  "1": "#{ORANGE_GROUP[:"1"]}-snow"
-}.freeze
-
-GREY_WC_GROUP = {
-  "4": "#{GREY_GROUP[:"4"]}-#{GREY_GROUP[:"3"]}",
-  "3": "#{GREY_GROUP[:"3"]}-#{GREY_GROUP[:"2"]}",
-  "2": "#{GREY_GROUP[:"2"]}-#{GREY_GROUP[:"1"]}",
-  "1": "#{GREY_GROUP[:"1"]}-snow"
-}.freeze
-
-CREAM_WC_GROUP = {
-  "4": "#{CREAM_GROUP[:"4"]}-#{CREAM_GROUP[:"3"]}",
-  "3": "#{CREAM_GROUP[:"3"]}-#{CREAM_GROUP[:"2"]}",
-  "2": "#{CREAM_GROUP[:"2"]}-#{CREAM_GROUP[:"1"]}",
-  "1": "#{CREAM_GROUP[:"1"]}-snow"
-}.freeze
+require './data'
 
 # creates genetic string for a not-cat
 class Genome
@@ -115,8 +82,12 @@ class Genome
   end
 
   def color_group
+    if @wind_alleles[0] == 'O'
+      watercolor_colors
+    else
+      standard_colors
+    end
     puts 'Is your cat in the orange group or the black group?'
-
     puts 'ORANGE (O) or BLACK (B)'
     @color_alleles[0] = gets.chomp
   end
@@ -161,25 +132,23 @@ class Genome
     gets.chomp == 'Y'
   end
 
-  def color_num
+  def color_num(color_type)
+    color_types = { 'standard' => COLORS, 'watercolor' => WC_COLORS }
     puts "What is your cat's color number?"
-    print_color_table
+    print_color_table(color_types[color_type])
     puts 'ONE (1), TWO (2), THREE (3), or FOUR(4)'
     color5 = gets.chomp
     @color_alleles[4] = color5
   end
 end
 
-def print_color_table
-  puts '|     1     |     2     |     3     |     4     |'
-  puts '|-----------|-----------|-----------|-----------|'
-  print_row(ORANGE_GROUP)
-  puts '|-----------|-----------|-----------|-----------|'
-  print_row(BLACK_GROUP)
-  puts '|-----------|-----------|-----------|-----------|'
-  print_row(CREAM_GROUP)
-  puts '|-----------|-----------|-----------|-----------|'
-  print_row(GREY_GROUP)
+def print_color_table(color_type)
+  puts '      1     |     2     |     3     |     4      '
+  color_type.each do |color_group|
+    puts ' -----------|-----------|-----------|----------- '
+    print_row(color_group)
+  end
+  puts ' -----------------------------------------------'
 end
 
 def print_row(colors)
@@ -193,13 +162,14 @@ end
 def decode_new_genome
   genome = Genome.new
   # genome.species
-  genome.wind
+  # genome.wind
   # genome.fur
-  if genome.wind_alleles != %w[N S]
-    genome.colors
-  else
-    genome.watercolor_colors
-  end
+  # if genome.wind_alleles != %w[N S]
+  #   genome.colors
+  # else
+  #   genome.watercolor_colors
+  # end
+  genome.color_num('standard')
   puts "Your not cat's genetic string is:"
   puts genome.genome_string
 end
