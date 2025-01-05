@@ -75,6 +75,7 @@ class Genome
     return unless %w[O B].include?(color1)
 
     visible_color(color1)
+    dilute ? @color[2, 3] = %w[D D] : @color[2] = ['F']
   end
 
   def visible_color(color)
@@ -99,9 +100,16 @@ class Genome
     puts 'YES (Y) or NO (N)'
     gets.chomp == 'Y'
   end
+
+  def dilute
+    puts 'Is your not cat dilute?'
+    puts "Dilute colors: #{CREAM_GROUP.join(', ')}, #{GREY_GROUP.join(', ')}"
+    puts 'YES (Y) or NO (N)'
+    gets.chomp == 'Y'
+  end
 end
 
-def determine_new_string
+def decode_new_genome
   genome = Genome.new
   # genome.species
   # genome.wind
@@ -111,4 +119,4 @@ def determine_new_string
   puts genome.genome_string
 end
 
-determine_new_string
+decode_new_genome
