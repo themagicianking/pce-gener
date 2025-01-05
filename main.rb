@@ -12,7 +12,7 @@ class Genome
     @wind_alleles = ['?', '?']
     @fur_alleles = ['?', '?']
     @color_alleles = ['?', '?', '?', '?', '?']
-    @color_type = nil
+    @color_type_hash = nil
     @pattern_alleles = ['?', '?', '?', '?']
     @white_alleles = ['?', '?', '?', '?']
     @growth_alleles = ['?', '?']
@@ -53,22 +53,12 @@ class Genome
     @fur_alleles = furs[fur]
   end
 
-  def colors
-    orange_or_black = check_orange_or_black
-    if orange_or_black
-      color_group
-      visible_color(@color_alleles[0])
-    else
-      # something else
-    end
-  end
-
   def color_type
-    puts 'Is your not cat standard, watercolor, or tortoiseshell?'
-    puts 'STANDARD (S), WATERCOLOR (W), or TORTOISESHELL (T)'
+    puts 'Is your not cat watercolor or tortoiseshell?'
+    puts 'WATERCOLOR (W) or TORTOISESHELL (T)'
     type = gets.chomp
-    color_types = { 'S' => COLORS, 'W' => WC_COLORS }
-    @color_type = color_types[type]
+    color_types = { 'W' => WC_COLORS }
+    @color_type_hash = color_types[type]
   end
 
   def color_group(color_type)
@@ -110,8 +100,8 @@ def check_recessive_longhair
   gets.chomp == 'Y'
 end
 
-def check_orange_or_black
-  puts 'Is your not cat snow or albino?'
+def check_albino
+  puts 'Is your not cat albino?'
   puts 'YES (Y) or NO (N)'
   gets.chomp == 'N'
 end
@@ -137,13 +127,18 @@ def check_dilute(color_type)
   gets.chomp == 'Y'
 end
 
-def decode_new_genome
-  genome = Genome.new
+def decode_new_genome(genome)
   genome.species
   genome.wind
   genome.fur
-  puts "Your not cat's genetic string is:"
-  puts genome.genome_string
+  if genome.wind_alleles == %w[N S]
+    genome.color_type
+  elsif genome.wind_alleles != %w[O O]
+    genome.color_type_hash = COLORS
+  end
 end
 
-decode_new_genome
+genome = Genome.new
+decode_new_genome(genome)
+puts "Your not cat's genetic string is:"
+puts genome.genome_string
