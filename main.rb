@@ -7,8 +7,38 @@ CREAM_GROUP = { "4": 'buff', "3": 'cream', "2": 'almond', "1": 'beige' }.freeze
 
 COLORS = [BLACK_GROUP, ORANGE_GROUP, GREY_GROUP, CREAM_GROUP].freeze
 
+BLACK_WC_GROUP = {
+  "4": "#{BLACK_GROUP[:"4"]}-#{BLACK_GROUP[:"3"]}",
+  "3": "#{BLACK_GROUP[:"3"]}-#{BLACK_GROUP[:"2"]}",
+  "2": "#{BLACK_GROUP[:"2"]}-#{BLACK_GROUP[:"1"]}",
+  "1": "#{BLACK_GROUP[:"1"]}-snow"
+}.freeze
+
+ORANGE_WC_GROUP = {
+  "4": "#{ORANGE_GROUP[:"4"]}-#{ORANGE_GROUP[:"3"]}",
+  "3": "#{ORANGE_GROUP[:"3"]}-#{ORANGE_GROUP[:"2"]}",
+  "2": "#{ORANGE_GROUP[:"2"]}-#{ORANGE_GROUP[:"1"]}",
+  "1": "#{ORANGE_GROUP[:"1"]}-snow"
+}.freeze
+
+GREY_WC_GROUP = {
+  "4": "#{GREY_GROUP[:"4"]}-#{GREY_GROUP[:"3"]}",
+  "3": "#{GREY_GROUP[:"3"]}-#{GREY_GROUP[:"2"]}",
+  "2": "#{GREY_GROUP[:"2"]}-#{GREY_GROUP[:"1"]}",
+  "1": "#{GREY_GROUP[:"1"]}-snow"
+}.freeze
+
+CREAM_WC_GROUP = {
+  "4": "#{CREAM_GROUP[:"4"]}-#{CREAM_GROUP[:"3"]}",
+  "3": "#{CREAM_GROUP[:"3"]}-#{CREAM_GROUP[:"2"]}",
+  "2": "#{CREAM_GROUP[:"2"]}-#{CREAM_GROUP[:"1"]}",
+  "1": "#{CREAM_GROUP[:"1"]}-snow"
+}.freeze
+
 # creates genetic string for a not-cat
 class Genome
+  attr_reader :wind_alleles
+
   def initialize
     @species_allele = '?'
     @wind_alleles = ['?', '?']
@@ -86,10 +116,19 @@ class Genome
 
   def color_group
     puts 'Is your cat in the orange group or the black group?'
-    puts "Orange group: #{ORANGE_GROUP.values.join(', ')}, #{CREAM_GROUP.values.join(', ')}"
-    puts "Black group: #{BLACK_GROUP.values.join(', ')}, #{GREY_GROUP.values.join(', ')}"
+
     puts 'ORANGE (O) or BLACK (B)'
     @color_alleles[0] = gets.chomp
+  end
+
+  def standard_colors
+    puts "Orange group: #{ORANGE_GROUP.values.join(', ')}, #{CREAM_GROUP.values.join(', ')}"
+    puts "Black group: #{BLACK_GROUP.values.join(', ')}, #{GREY_GROUP.values.join(', ')}"
+  end
+
+  def watercolor_colors
+    puts "Orange group: #{ORANGE_WC_GROUP.values.join(', ')}, #{CREAM_WC_GROUP.values.join(', ')}"
+    puts "Black group: #{BLACK_WC_GROUP.values.join(', ')}, #{GREY_WC_GROUP.values.join(', ')}"
   end
 
   def visible_color(color)
@@ -159,7 +198,7 @@ def decode_new_genome
   if genome.wind_alleles != %w[N S]
     genome.colors
   else
-    puts "You've got a weird watercolor."
+    genome.watercolor_colors
   end
   puts "Your not cat's genetic string is:"
   puts genome.genome_string
