@@ -62,6 +62,15 @@ class Genome
     puts 'YES (Y) or NO (N)'
     gets.chomp == 'Y'
   end
+
+  def set_color
+    puts 'Is your cat in the orange group, the black group, or albino?'
+    puts 'ORANGE (O), BLACK (B), or ALBINO (A)'
+    color = gets.chomp
+    return unless color != 'A'
+
+    @color[0] = color
+  end
 end
 
 def determine_new_string
@@ -69,6 +78,7 @@ def determine_new_string
   genome.set_species
   genome.set_wind
   genome.set_fur
+  genome.set_color
   puts "Your not cat's genetic string is:"
   puts genome.genome_string
 end
