@@ -12,6 +12,7 @@ class Genome
     @wind_alleles = ['?', '?']
     @fur_alleles = ['?', '?']
     @color_alleles = ['?', '?', '?', '?', '?']
+    @color_type = nil
     @pattern_alleles = ['?', '?', '?', '?']
     @white_alleles = ['?', '?', '?', '?']
     @growth_alleles = ['?', '?']
@@ -76,18 +77,22 @@ class Genome
     end
   end
 
+  def color_type
+    puts 'Is your not cat standard, watercolor, or tortoiseshell?'
+    puts 'STANDARD (S), WATERCOLOR (W), or TORTOISESHELL (T)'
+    type = gets.chomp
+    color_types = { 'S' => COLORS, 'W' => WC_COLORS }
+    @color_type = color_types[type]
+  end
+
   def check_orange_or_black
     puts 'Is your not cat snow or albino?'
     puts 'YES (Y) or NO (N)'
     gets.chomp == 'N'
   end
 
-  def color_group
-    if @wind_alleles[0] == 'O'
-      watercolor_colors
-    else
-      standard_colors
-    end
+  def color_group(color_type)
+    print_color_options(color_type)
     puts 'Is your cat in the orange group or the black group?'
     puts 'ORANGE (O) or BLACK (B)'
     @color_alleles[0] = gets.chomp
@@ -117,17 +122,15 @@ class Genome
   end
 
   def dilute(color_type)
-    color_types = { 'standard' => COLORS, 'watercolor' => WC_COLORS }
     puts 'Is your not cat dilute?'
-
+    print_dilute_options(color_type)
     puts 'YES (Y) or NO (N)'
     gets.chomp == 'Y'
   end
 
   def color_num(color_type)
-    color_types = { 'standard' => COLORS, 'watercolor' => WC_COLORS }
     puts "What is your cat's color number?"
-    print_color_table(color_types[color_type])
+    print_color_table(color_type)
     puts 'ONE (1), TWO (2), THREE (3), or FOUR(4)'
     color5 = gets.chomp
     @color_alleles[4] = color5
@@ -136,18 +139,8 @@ end
 
 def decode_new_genome
   genome = Genome.new
-  # genome.species
-  # genome.wind
-  # genome.fur
-  # if genome.wind_alleles != %w[N S]
-  #   genome.colors
-  # else
-  #   genome.watercolor_colors
-  # end
-  genome.color_num('standard')
   puts "Your not cat's genetic string is:"
   puts genome.genome_string
 end
 
-# decode_new_genome
-print_color_table(COLORS)
+decode_new_genome
