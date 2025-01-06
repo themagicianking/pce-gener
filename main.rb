@@ -146,12 +146,21 @@ def decode_new_genome(genome)
   genome.wind
   genome.fur
   if albino
-    puts 'Not cat is albino.'
+    decode_albino(genome)
   elsif genome.wind_alleles == %w[N S]
     genome.orange_black_dominant(WC_COLORS)
   elsif genome.wind_alleles != %w[O O]
     genome.orange_black_dominant(COLORS)
   end
+end
+
+def decode_albino(genome)
+  recessive_black ? 'carries black' : 'no black'
+  o_and_black_combos = {
+    'carries black' =>  recessive_orange ? %w[B O] : %w[B B],
+    'no black' => %w[O O]
+  }
+  genome.color_alleles[0, 1] = o_and_black_combos[carries_black]
 end
 
 genome = Genome.new
