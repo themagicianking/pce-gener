@@ -7,6 +7,7 @@ require './helpers'
 class Genome
   attr_reader :wind_alleles
   attr_writer :color_type_hash
+  attr_accessor :color_alleles
 
   def initialize
     @species_allele = '?'
@@ -155,12 +156,11 @@ def decode_new_genome(genome)
 end
 
 def decode_albino(genome)
-  recessive_black ? 'carries black' : 'no black'
   o_and_black_combos = {
-    'carries black' =>  recessive_orange ? %w[B O] : %w[B B],
-    'no black' => %w[O O]
+    true =>  recessive_orange ? %w[B O] : %w[B B],
+    false => %w[O O]
   }
-  genome.color_alleles[0, 1] = o_and_black_combos[carries_black]
+  genome.color_alleles[0, 1] = o_and_black_combos[recessive_black]
 end
 
 genome = Genome.new
