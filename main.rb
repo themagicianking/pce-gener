@@ -168,10 +168,11 @@ end
 
 def decode_color(genome)
   if genome.wind_alleles == %w[N S]
-    genome.orange_black_dominant(WC_COLORS)
-    genome.color_density(WC_COLORS)
+    color_group = genome.color_type == 'WC' ? WC_COLORS : COLORS
+    genome.orange_black_dominant(color_group)
+    genome.color_density(color_group)
   elsif genome.wind_alleles == %w[O O]
-    puts 'this is a null cat'
+    nil
   else
     genome.orange_black_dominant(COLORS)
     genome.color_density(COLORS)
