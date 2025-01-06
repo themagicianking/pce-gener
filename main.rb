@@ -15,8 +15,7 @@ class Genome
     @fur_alleles = ['?', '?']
     @o_and_b_alleles = ['?', '?']
     @dilute_alleles = ['?', '?']
-    @color_num_allele = '?'
-    @color_type_hash = nil
+    @color_density_allele = '?'
     @pattern_alleles = ['?', '?', '?', '?']
     @white_alleles = ['?', '?', '?', '?']
     @growth_alleles = ['?', '?']
@@ -24,7 +23,7 @@ class Genome
   end
 
   def genome_string
-    "[#{@species_allele}] [#{@wind_alleles.join}] [#{@fur_alleles.join}] [#{@o_and_b_alleles.join}#{@dilute_alleles.join}#{@color_num_allele}] [#{@pattern_alleles.join}] [#{@white_alleles.join}] [#{@growth_alleles.join}] [#{@accent_alleles.join}]"
+    "[#{@species_allele}] [#{@wind_alleles.join}] [#{@fur_alleles.join}] [#{@o_and_b_alleles.join}#{@dilute_alleles.join}#{@color_density_allele}] [#{@pattern_alleles.join}] [#{@white_alleles.join}] [#{@growth_alleles.join}] [#{@accent_alleles.join}]"
   end
 
   def species
@@ -60,9 +59,7 @@ class Genome
   def color_type
     puts 'Is your not cat watercolor or tortoiseshell?'
     puts 'WATERCOLOR (W) or TORTOISESHELL (T)'
-    type = gets.chomp
-    color_types = { 'W' => WC_COLORS }
-    @color_type_hash = color_types[type]
+    gets.chomp
   end
 
   def orange_black_dominant(color_type)
@@ -104,12 +101,20 @@ class Genome
     end
   end
 
-  def color_num(color_type)
-    puts "What is your cat's color number?"
+  def color_density(color_type)
+    puts "What is your not cat's color number?"
     print_color_table(color_type)
     puts 'ONE (1), TWO (2), THREE (3), or FOUR(4)'
-    color_num = gets.chomp
-    @color_num_allele = color_num
+    color_density = gets.chomp
+    @color_density_allele = color_density
+  end
+
+  def color_density_albino
+    puts 'Put your not cat in the bean sandbox with a not cat whose color density is 4.'
+    puts 'What is the lowest color density of the beans produced?'
+    puts 'ONE (1), TWO (2), THREE (3), or FOUR (4)'
+    color_density = gets.chomp
+    @color_density_allele = color_density
   end
 end
 
@@ -176,6 +181,7 @@ def decode_albino(genome)
       %w[O O]
     end
   genome.dilute_albino
+  genome.color_density_albino
 end
 
 genome = Genome.new
