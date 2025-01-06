@@ -163,16 +163,22 @@ def decode_new_genome(genome)
   genome.species
   genome.wind
   genome.fur
-  if albino
-    decode_albino(genome)
-  elsif genome.wind_alleles == %w[N S]
+  albino ? decode_albino_color(genome) : decode_color(genome)
+end
+
+def decode_color(genome)
+  if genome.wind_alleles == %w[N S]
     genome.orange_black_dominant(WC_COLORS)
-  elsif genome.wind_alleles != %w[O O]
+    genome.color_density(WC_COLORS)
+  elsif genome.wind_alleles == %w[O O]
+    puts 'this is a null cat'
+  else
     genome.orange_black_dominant(COLORS)
+    genome.color_density(COLORS)
   end
 end
 
-def decode_albino(genome)
+def decode_albino_color(genome)
   has_black = recessive_black
   genome.o_and_b_alleles =
     if has_black
