@@ -7,13 +7,15 @@ require './helpers'
 class Genome
   attr_reader :wind_alleles
   attr_writer :color_type_hash
-  attr_accessor :color_alleles
+  attr_accessor :o_and_b_alleles
 
   def initialize
     @species_allele = '?'
     @wind_alleles = ['?', '?']
     @fur_alleles = ['?', '?']
-    @color_alleles = ['?', '?', '?', '?', '?']
+    @o_and_b_alleles = ['?', '?']
+    @dilute_alleles = ['?', '?']
+    @color_num_allele = '?'
     @color_type_hash = nil
     @pattern_alleles = ['?', '?', '?', '?']
     @white_alleles = ['?', '?', '?', '?']
@@ -22,7 +24,7 @@ class Genome
   end
 
   def genome_string
-    "[#{@species_allele}] [#{@wind_alleles.join}] [#{@fur_alleles.join}] [#{@color_alleles.join}] [#{@pattern_alleles.join}] [#{@white_alleles.join}] [#{@growth_alleles.join}] [#{@accent_alleles.join}]"
+    "[#{@species_allele}] [#{@wind_alleles.join}] [#{@fur_alleles.join}] [#{@o_and_b_alleles.join}#{@dilute_alleles.join}#{@color_num_allele}] [#{@pattern_alleles.join}] [#{@white_alleles.join}] [#{@growth_alleles.join}] [#{@accent_alleles.join}]"
   end
 
   def species
@@ -68,12 +70,12 @@ class Genome
     print_color_options(color_type)
     puts 'ORANGE (O) or BLACK (B)'
     color1 = gets.chomp
-    @color_alleles[0] = color1
-    @color_alleles[1] = orange_black_recessive
+    @o_and_b_alleles[0] = color1
+    @o_and_b_alleles[1] = orange_black_recessive
   end
 
   def orange_black_recessive
-    if @color_alleles[0] == 'O'
+    if @o_and_b_alleles[0] == 'O'
       recessive_black ? 'B' : 'O'
     else
       recessive_orange ? 'O' : 'B'
@@ -92,12 +94,22 @@ class Genome
     @dilute_alleles = dilutes[dilute]
   end
 
+  def dilute_albino
+    if recessive_dilute
+      puts 'Are all of the beans in the dilute group?'
+      puts 'YES (Y) or NO (N)'
+      @dilute_alleles = gets.chomp == 'Y' ? %w[D D] : %w[F D]
+    else
+      @dilute_alleles = %w[F F]
+    end
+  end
+
   def color_num(color_type)
     puts "What is your cat's color number?"
     print_color_table(color_type)
     puts 'ONE (1), TWO (2), THREE (3), or FOUR(4)'
-    color5 = gets.chomp
-    @color_alleles[4] = color5
+    color_num = gets.chomp
+    @color_num_allele = color_num
   end
 end
 
@@ -137,7 +149,7 @@ end
 
 def recessive_dilute
   puts 'Put your not cat in the bean sandbox with a not cat with a recessive dilute trait.'
-  puts 'Are any of the dilutes in the dilute group?'
+  puts 'Are any of the beans in the dilute group?'
   puts 'YES (Y) or NO (N)'
   gets.chomp == 'Y'
 end
@@ -156,11 +168,14 @@ def decode_new_genome(genome)
 end
 
 def decode_albino(genome)
-  o_and_black_combos = {
-    true =>  recessive_orange ? %w[B O] : %w[B B],
-    false => %w[O O]
-  }
-  genome.color_alleles[0, 1] = o_and_black_combos[recessive_black]
+  has_black = recessive_black
+  genome.o_and_b_alleles =
+    if has_black
+      recessive_orange ? %w[B O] : %w[B B]
+    else
+      %w[O O]
+    end
+  genome.dilute_albino
 end
 
 genome = Genome.new
