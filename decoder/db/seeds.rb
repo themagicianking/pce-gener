@@ -7,3 +7,20 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+species_names = ["Not Cat", "Mercat"]
+species_names.each { |name| Species.find_or_create_by!(name: name) }
+
+Wind.find_or_create_by!(name: "North", allele_1: "N", allele_2: "?")
+Wind.find_or_create_by!(name: "North", allele_1: "N", allele_2: "N")
+Wind.find_or_create_by!(name: "North", allele_1: "N", allele_2: "O")
+Wind.find_or_create_by!(name: "South", allele_1: "S", allele_2: "?")
+Wind.find_or_create_by!(name: "North", allele_1: "S", allele_2: "S")
+Wind.find_or_create_by!(name: "North", allele_1: "S", allele_2: "O")
+Wind.find_or_create_by!(name: "Trade", allele_1: "N", allele_2: "S")
+Wind.find_or_create_by!(name: "Null", allele_1: "O", allele_2: "O")
+
+Fur.find_or_create_by!(name: "Shorthair", allele_1: "S", allele_2: "?")
+Fur.find_or_create_by!(name: "Shorthair", allele_1: "S", allele_2: "S")
+Fur.find_or_create_by!(name: "Shorthair", allele_1: "S", allele_2: "L")
+Fur.find_or_create_by!(name: "Longhair", allele_1: "L", allele_2: "L")
