@@ -1,0 +1,2 @@
+class Fur < ApplicationRecord
+end

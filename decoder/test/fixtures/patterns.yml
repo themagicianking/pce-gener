@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  visible_allele_1: MyString
+  visible_allele_2: MyString
+  type_allele_1: MyString
+  type_allele_2: MyString
+
+two:
+  name: MyString
+  visible_allele_1: MyString
+  visible_allele_2: MyString
+  type_allele_1: MyString
+  type_allele_2: MyString

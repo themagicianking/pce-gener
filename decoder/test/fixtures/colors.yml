@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  o_and_b_allele_1: MyString
+  o_and_b_allele_2: MyString
+  dilute_allele_1: MyString
+  dilute_allele_2: MyString
+  density_allele: MyString
+
+two:
+  name: MyString
+  o_and_b_allele_1: MyString
+  o_and_b_allele_2: MyString
+  dilute_allele_1: MyString
+  dilute_allele_2: MyString
+  density_allele: MyString

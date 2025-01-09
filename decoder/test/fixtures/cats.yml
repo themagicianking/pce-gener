@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  species: MyString
+  wind: MyString
+  fur: MyString
+  color: MyString
+  pattern: MyString
+  white_marks: MyString
+  adult: false
+  genome: 1
+
+two:
+  species: MyString
+  wind: MyString
+  fur: MyString
+  color: MyString
+  pattern: MyString
+  white_marks: MyString
+  adult: false
+  genome: 1
