@@ -116,6 +116,11 @@ class Genome
     color_density = gets.chomp
     @color_density_allele = color_density
   end
+
+  def realized_pattern
+    puts "Is your cat patterned or solid?"
+    puts "PATTERNED (P) or SOLID (S)"
+  end
 end
 
 def recessive_null
