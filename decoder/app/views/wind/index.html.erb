@@ -1,0 +1,22 @@
+<style>
+table, th, td{
+  border:1px solid black;
+}
+</style>
+<h1>Winds</h1>
+
+<div id="winds">
+  <table>
+    <tr>
+      <th>Wind Type </th>
+      <th>First Allele </th>
+      <th>Second Allele </th>
+      <% @wind.each do |wind| %>
+    <tr>
+      <td><%= wind.name %></td>
+      <td><%= wind.allele_1 %></td>
+      <td><%= wind.allele_2 %></td>
+    </tr>
+  <% end %>
+  </table>
+</div>
